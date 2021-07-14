@@ -1,5 +1,6 @@
 /* mbed Microcontroller Library
  * Copyright (c) 2006-2013 ARM Limited
+ * SPDX-License-Identifier: Apache-2.0
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,12 +59,25 @@ static void _analogin_init_direct(analogin_t *obj, const PinMap *pinmap)
     ADC16_GetDefaultConfig(&adc16_config);
     adc16_config.clockSource = kADC16_ClockSourceAlt0;
     adc16_config.clockDivider = (adc16_clock_divider_t)clkdiv;
-    adc16_config.resolution = kADC16_ResolutionSE16Bit;
+    if (obj->adc & (1 << ADC_DIFFERENTIAL_SHIFT)) 
+        adc16_config.resolution = kADC16_ResolutionDF16Bit;
+    else
+#if 1   //AD 10ビットシングルエンド
+        adc16_config.resolution = kADC16_ResolutionSE10Bit;
+#else
+        adc16_config.resolution = kADC16_ResolutionDF16Bit;
+#endif
     ADC16_Init(adc_addrs[instance], &adc16_config);
     ADC16_EnableHardwareTrigger(adc_addrs[instance], false);
     ADC16_SetHardwareAverage(adc_addrs[instance], kADC16_HardwareAverageCount4);
-    pin_function(pinmap->pin, pinmap->function);
-    pin_mode(pinmap->pin, PullNone);
+#if 1   /* 修正後*/
+    if (pinmap->pin < 0xFEFE) {
+#else   /* 修正前 */
+    if (pinmap->pin != 0xFEFE) {
+#endif
+        pin_function(pinmap->pin, pinmap->function);
+        pin_mode(pinmap->pin, PullNone);
+    }
 }
 
 void analogin_init(analogin_t *obj, PinName pin)
@@ -85,7 +99,10 @@ uint16_t analogin_read_u16(analogin_t *obj)
     adc16_channel_config.enableInterruptOnConversionCompleted = false;
 
 #if defined(FSL_FEATURE_ADC16_HAS_DIFF_MODE) && FSL_FEATURE_ADC16_HAS_DIFF_MODE
-    adc16_channel_config.enableDifferentialConversion = false;
+    if (obj->adc & (1 << ADC_DIFFERENTIAL_SHIFT)) 
+        adc16_channel_config.enableDifferentialConversion = true;
+    else
+        adc16_channel_config.enableDifferentialConversion = false;
 #endif
 
     ADC16_SetChannelMuxMode(adc_addrs[instance],

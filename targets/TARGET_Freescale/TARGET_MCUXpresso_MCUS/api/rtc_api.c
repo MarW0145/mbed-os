@@ -57,8 +57,11 @@ int rtc_isenabled(void)
     if(!rtc_init_done) {
         rtc_free();
     }
-
+#if 1   //RTC Power OFF Time Continue
+    return (rtc_init_done );
+#else
     return (rtc_init_done & rtc_time_set);
+#endif
 }
 
 time_t rtc_read(void)

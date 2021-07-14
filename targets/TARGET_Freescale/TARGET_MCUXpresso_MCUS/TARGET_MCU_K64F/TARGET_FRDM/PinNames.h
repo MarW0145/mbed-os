@@ -1,5 +1,6 @@
 /* mbed Microcontroller Library
  * Copyright (c) 2006-2013 ARM Limited
+ * SPDX-License-Identifier: Apache-2.0
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -242,7 +243,20 @@ typedef enum {
     A3 = PTB11,
     A4 = PTC11,
     A5 = PTC10,
-
+    
+#if 1   /* Analog修正後*/
+    ADC0_DP0_SE = 0xFEFE, /* ADC does not have Pin Name in RM */
+    ADC0_DM0_SE, /* ADC does not have Pin Name in RM */
+    ADC1_DP0_SE, /* ADC does not have Pin Name in RM */
+    ADC1_DM0_SE, /* ADC does not have Pin Name in RM */
+    ADC1_SE18_SE, /* ADC does not have Pin Name in RM */
+    ADC0_DP1_SE, /* ADC does not have Pin Name in RM */
+    ADC0_DM1_SE, /* ADC does not have Pin Name in RM */
+    ADC1_DP1_SE, /* ADC does not have Pin Name in RM */
+    ADC1_DM1_SE, /* ADC does not have Pin Name in RM */
+    ADC0_SE23_SE, /* ADC does not have Pin Name in RM */
+#endif
+   
     DAC0_OUT = 0xFEFE, /* DAC does not have Pin Name in RM */
 
     //SPI Pins configuration

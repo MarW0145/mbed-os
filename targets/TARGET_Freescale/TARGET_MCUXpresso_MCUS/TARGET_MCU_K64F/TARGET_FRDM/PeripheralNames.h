@@ -23,10 +23,6 @@ extern "C" {
 #endif
 
 typedef enum {
-    GPIO_X = 0, // dummy peripheral used instead of GPIO_A..GPIO_E
-} GPIOName;
-
-typedef enum {
     OSC32KCLK = 0,
 } RTCName;
 
@@ -86,7 +82,20 @@ typedef enum {
 
 #define ADC_INSTANCE_SHIFT           8
 #define ADC_B_CHANNEL_SHIFT          5
+#define ADC_DIFFERENTIAL_SHIFT       6
 typedef enum {
+#if 1   /* Analog修正後*/
+    ADC0_DP0 = (0 << ADC_INSTANCE_SHIFT) | 0,
+    ADC0_DM0 = (0 << ADC_INSTANCE_SHIFT) | 19,
+    ADC1_DP0 = (1 << ADC_INSTANCE_SHIFT) | 0,
+    ADC1_DM0 = (1 << ADC_INSTANCE_SHIFT) | 19,
+    ADC1_SE18 = (1 << ADC_INSTANCE_SHIFT) | 18,
+    ADC0_DP1 = (0 << ADC_INSTANCE_SHIFT) | 1,
+    ADC0_DM1 = (0 << ADC_INSTANCE_SHIFT) | 20,
+    ADC1_DP1 = (1 << ADC_INSTANCE_SHIFT) | 1,
+    ADC1_DM1 = (1 << ADC_INSTANCE_SHIFT) | 20,
+    ADC0_SE23 = (0 << ADC_INSTANCE_SHIFT) | 23,
+#endif
     ADC0_SE4b = (0 << ADC_INSTANCE_SHIFT) | (1 << ADC_B_CHANNEL_SHIFT) | 4,
     ADC0_SE5b = (0 << ADC_INSTANCE_SHIFT) | (1 << ADC_B_CHANNEL_SHIFT) | 5,
     ADC0_SE6b = (0 << ADC_INSTANCE_SHIFT) | (1 << ADC_B_CHANNEL_SHIFT) | 6,
@@ -102,7 +111,7 @@ typedef enum {
     ADC0_SE18 = (0 << ADC_INSTANCE_SHIFT) | 18,
     ADC0_SE21 = (0 << ADC_INSTANCE_SHIFT) | 21,
     ADC0_SE22 = (0 << ADC_INSTANCE_SHIFT) | 22,
-    ADC0_SE23 = (0 << ADC_INSTANCE_SHIFT) | 23,
+//    ADC0_SE23 = (0 << ADC_INSTANCE_SHIFT) | 23,
     ADC1_SE4a = (1 << ADC_INSTANCE_SHIFT) | 4,
     ADC1_SE5a = (1 << ADC_INSTANCE_SHIFT) | 5,
     ADC1_SE6a = (1 << ADC_INSTANCE_SHIFT) | 6,
@@ -119,7 +128,7 @@ typedef enum {
     ADC1_SE15 = (1 << ADC_INSTANCE_SHIFT) | 15,
     ADC1_SE16 = (1 << ADC_INSTANCE_SHIFT) | 16,
     ADC1_SE17 = (1 << ADC_INSTANCE_SHIFT) | 17,
-    ADC1_SE18 = (1 << ADC_INSTANCE_SHIFT) | 18,
+//    ADC1_SE18 = (1 << ADC_INSTANCE_SHIFT) | 18,
     ADC1_SE23 = (1 << ADC_INSTANCE_SHIFT) | 23,
 } ADCName;
 
